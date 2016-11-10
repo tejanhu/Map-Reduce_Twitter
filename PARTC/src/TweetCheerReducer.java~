@@ -1,0 +1,30 @@
+import java.io.IOException;
+import java.util.Iterator;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+
+public class TweetCheerReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+
+    private IntWritable result = new IntWritable();
+	  //reducer method takes key from mapper and value from mapper as input
+    public void reduce(Text key, Iterable<IntWritable> occurrences, Context context)
+
+              throws IOException, InterruptedException {
+
+        int total = 0;
+
+        for (IntWritable occurrence : occurrences) {
+
+            total=total+occurrence.get();
+
+        }
+
+               result.set(total);
+
+      context.write(key,result);
+
+    }
+
+}
